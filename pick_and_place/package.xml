@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>pick_and_place</name>
+  <version>0.0.0</version>
+  <description>TODO: Package description</description>
+  <maintainer email="ayush@todo.todo">ayush</maintainer>
+  <license>TODO: License declaration</license>
+
+  <depend>rclpy</depend>
+  <depend>moveit_commander</depend>
+  <depend>geometry_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>tf_transformations</depend>
+  <depend>pick_and_place_interfaces</depend>
+  <depend>moveit_msgs</depend>
+  <depend>action_msgs</depend>
+  <depend>actionlib_msgs</depend>
+  <depend>builtin_interfaces</depend>
+  <depend>moveit</depend>
+  <depend>moveit_py</depend>
+  <depend>ament_index_python</depend>
+  <depend>numpy</depend>
+  <depend>my_robot_interfaces</depend>
+  <exec_depend>moveit_ros_planning_interface</exec_depend>
+  <exec_depend>moveit_configs_utils</exec_depend>
+  <exec_depend>pymoveit2</exec_depend>           
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

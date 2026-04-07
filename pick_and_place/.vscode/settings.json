@@ -1,0 +1,22 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/ayush/gati_bot_ws/install/gati_bot_node/lib/python3.10/site-packages",
+        "/home/ayush/mitsubhishi_ws/install/pick_and_place/lib/python3.10/site-packages",
+        "/home/ayush/mitsubhishi_ws/install/my_robot_interfaces/local/lib/python3.10/dist-packages",
+        "/home/ayush/mitsubhishi_ws/install/moveit_py/local/lib/python3.10/dist-packages",
+        "/home/ayush/mitsubhishi_ws/install/moveit_configs_utils/lib/python3.10/site-packages",
+        "/home/ayush/mitsubhishi_ws/install/melfa_msgs/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/ayush/gati_bot_ws/install/gati_bot_node/lib/python3.10/site-packages",
+        "/home/ayush/mitsubhishi_ws/install/pick_and_place/lib/python3.10/site-packages",
+        "/home/ayush/mitsubhishi_ws/install/my_robot_interfaces/local/lib/python3.10/dist-packages",
+        "/home/ayush/mitsubhishi_ws/install/moveit_py/local/lib/python3.10/dist-packages",
+        "/home/ayush/mitsubhishi_ws/install/moveit_configs_utils/lib/python3.10/site-packages",
+        "/home/ayush/mitsubhishi_ws/install/melfa_msgs/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}

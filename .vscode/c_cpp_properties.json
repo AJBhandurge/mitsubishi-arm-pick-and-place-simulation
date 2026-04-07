@@ -1,0 +1,31 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/ayush/ros2_ws/install/gazebo_ros2_control/include/**",
+        "/home/ayush/gati_bot_ws/install/micro_ros_agent/include/**",
+        "/home/ayush/gati_bot_ws/install/micro_ros_msgs/include/**",
+        "/home/ayush/svr_gati_ws/install/my_robot_hardware/include/**",
+        "/home/ayush/turtlebot_ws/install/turtlebot3_gazebo/include/**",
+        "/home/ayush/turtlebot_ws/install/turtlebot3_fake_node/include/**",
+        "/home/ayush/mitsubhishi_ws/install/melfa_io_controllers/include/**",
+        "/home/ayush/mitsubhishi_ws/install/melfa_msgs/include/**",
+        "/home/ayush/mitsubhishi_ws/install/melfa_driver/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/ayush/mitsubhishi_ws/src/melfa_ros2_driver/melfa_driver/include/**",
+        "/home/ayush/mitsubhishi_ws/src/melfa_ros2_driver/melfa_io_controllers/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
