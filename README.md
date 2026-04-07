@@ -1,4 +1,15 @@
 # Pick and Place & Sorting — Mitsubishi RV-2FR (ROS 2 Simulation)
+<img width="1920" height="1072" alt="Screenshot from 2026-04-07 12-49-35" src="https://github.com/user-attachments/assets/e33d73c6-7e9e-4611-8e4b-f6a68823bf78" />
+
+
+
+<img width="1920" height="1072" alt="Screenshot from 2026-04-07 12-50-48" src="https://github.com/user-attachments/assets/b3be0332-0357-4621-8238-68fbdf168845" />
+
+
+
+
+<img width="1920" height="1072" alt="Screenshot from 2026-04-07 12-53-58" src="https://github.com/user-attachments/assets/bf05117f-bf75-47f4-a9e4-3764e2e8393a" />
+
 
 A ROS 2 Python package that performs **vision-guided pick-and-place** and **colour-based sorting** on a simulated **Mitsubishi RV-2FR** 6-DOF industrial robot arm using the `pymoveit2` library and MoveIt 2.
 
@@ -175,7 +186,6 @@ Manages the MoveIt 2 planning scene for the sorting task.
 
 - ROS 2 Humble (or later)
 - MoveIt 2
-- Mitsubishi RV-2FR URDF / MoveIt config package
 - `pymoveit2` installed in your workspace
 
 ### Build
@@ -183,7 +193,7 @@ Manages the MoveIt 2 planning scene for the sorting task.
 ```bash
 # Clone into your ROS 2 workspace
 cd ~/ros2_ws/src
-# (place or clone the pick_and_place package here)
+# (Clone this full repo here)
 
 # Install dependencies
 cd ~/ros2_ws
@@ -205,7 +215,11 @@ source install/setup.bash
 Launch your Mitsubishi RV-2FR simulation environment (Gazebo / RViz) with MoveIt 2 and the camera sensor active.
 
 ```bash
-ros2 launch <your_rv2fr_moveit_config> demo.launch.py
+ros2 launch melfa_bringup rv2fr_control.launch.py use_sim:=true use_fake_hardware:=false start_rviz:=false
+```
+Launch moveit in another terminal
+```bash
+ros2 launch melfa_rv2fr_moveit_config rv2fr_moveit.launch.py use_sim_time:=true
 ```
 
 ### Step 2: Start the Colour Detector
@@ -215,8 +229,16 @@ ros2 run pick_and_place colour_detector
 ```
 
 This opens a live OpenCV window showing detected objects with bounding boxes and their computed base-frame coordinates.
+### Step 3: Joint Control
 
-### Step 3: Run the Pick and Place Node
+```bash
+ros2 run pick_and_place commander
+```
+
+Then publish joint states to `/joint_commands` for manual teleoperation.
+
+---
+### Step 4: Run the Pick and Place Node
 
 ```bash
 # Pick a Blue object (default)
