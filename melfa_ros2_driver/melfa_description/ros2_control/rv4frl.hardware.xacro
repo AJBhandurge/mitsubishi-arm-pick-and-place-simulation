@@ -1,0 +1,199 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="rv4frl_hardware" params="name prefix robot_ip robot_port scara is_j7 j7_linear is_j8 j8_linear packet_lost_log initial_positions_file controller_config controller_type use_sim:=^|false use_fake_hardware:=^|true">
+        <xacro:property name="initial_positions" value="${xacro.load_yaml(initial_positions_file)['initial_positions']}"/>
+        <xacro:property name="ctrl_limits" value="${xacro.load_yaml(controller_config)['controller_limits']}"/>
+        <xacro:property name="ctrl_mode" value="${xacro.load_yaml(controller_config)['control_mode_io']}"/>
+
+         <ros2_control name="${name}" type="system">
+
+            <xacro:if value="$(arg use_sim)">
+                <hardware>
+                    <plugin>ign_ros2_control/IgnitionSystem</plugin>
+                </hardware>
+            </xacro:if>
+            <xacro:unless value="$(arg use_sim)">
+                <hardware>
+                <xacro:if value="${use_fake_hardware or use_sim}">
+                    <plugin>fake_components/GenericSystem</plugin>
+                        <param name="state_following_offset">0.0</param>
+                </xacro:if>
+                <xacro:unless value="${use_fake_hardware or use_sim}">
+                    <plugin>melfa_driver/MELFAPositionHardwareInterface</plugin>
+                    <param name="prefix">${prefix}</param>
+                    <param name="robot_ip">${robot_ip}</param>
+                    <param name="robot_port">${robot_port}</param>
+                    <param name="scara">${scara}</param>
+                    <param name="is_j7">${is_j7}</param>
+                    <param name="j7_linear">${j7_linear}</param>
+                    <param name="is_j8">${is_j8}</param>
+                    <param name="j8_linear">${j8_linear}</param>
+                    <param name="packet_lost_log">${packet_lost_log}</param>
+                     <!-- Controller Type R/Q/D -->
+                    <param name="controller_type">${controller_type}</param>
+                     <!-- Limits of IO with respect to controller_type -->
+                    <param name="hand_io_limits">${ctrl_limits[controller_type]['hand_io_limits']}</param>
+                    <param name="plc_link_io_limits">${ctrl_limits[controller_type]['plc_link_io_limits']}</param> 
+                    <param name="safety_input_limits">${ctrl_limits[controller_type]['safety_input_limits']}</param> 
+                    <param name="safety_output_limits">${ctrl_limits[controller_type]['safety_output_limits']}</param> 
+                    <param name="io_unit_limits">${ctrl_limits[controller_type]['io_unit_limits']}</param>
+                    <param name="misc1_io_limits">${ctrl_limits[controller_type]['misc1_io_limits']}</param>
+                    <param name="misc2_io_limits">${ctrl_limits[controller_type]['misc2_io_limits']}</param>
+                    <param name="misc3_io_limits">${ctrl_limits[controller_type]['misc3_io_limits']}</param>
+                    <param name="io_control_mode">${ctrl_mode['io_mode']}</param> 
+                </xacro:unless>
+                </hardware>
+            </xacro:unless>
+
+            <joint name="${prefix}rv4frl_joint_1">
+                <param name="initial_position">${initial_positions['rv_joint_1']}</param>
+                <command_interface name="position" >
+                    <param name="min">-4.1887902047863905</param>
+                    <param name="max">4.1887902047863905</param>
+                </command_interface>
+                <state_interface name="position"/>
+                <xacro:if value="$(arg use_sim)">
+                    <state_interface name="position">
+                        <param name="initial_value">${initial_positions['rv_joint_1']}</param>
+                    </state_interface>
+                </xacro:if>
+            </joint>
+
+            <joint name="${prefix}rv4frl_joint_2">
+                <param name="initial_position">${initial_positions['rv_joint_2']}</param>
+                <command_interface name="position" >
+                    <param name="min">-2.0943951023931953</param>
+                    <param name="max">2.0943951023931953</param>
+                </command_interface>
+                <state_interface name="position"/>
+                <xacro:if value="$(arg use_sim)">
+                    <state_interface name="position">
+                        <param name="initial_value">${initial_positions['rv_joint_2']}</param>
+                    </state_interface>
+                </xacro:if>
+            </joint>
+            <joint name="${prefix}rv4frl_joint_3">
+                <param name="initial_position">${initial_positions['rv_joint_3']}</param>
+                <command_interface name="position" >
+                    <param name="min">0.0</param>
+                    <param name="max">2.8623399732707</param>
+                </command_interface>
+                <state_interface name="position"/>
+                <xacro:if value="$(arg use_sim)">
+                    <state_interface name="position">
+                        <param name="initial_value">${initial_positions['rv_joint_3']}</param>
+                    </state_interface>
+                </xacro:if>
+            </joint>
+            <joint name="${prefix}rv4frl_joint_4">
+                <param name="initial_position">${initial_positions['rv_joint_4']}</param>
+                <command_interface name="position" >
+                    <param name="min">-3.490658503988659</param>
+                    <param name="max">3.490658503988659</param>
+                </command_interface>
+                <state_interface name="position"/>
+                <xacro:if value="$(arg use_sim)">
+                    <state_interface name="position">
+                        <param name="initial_value">${initial_positions['rv_joint_4']}</param>
+                    </state_interface>
+                </xacro:if>
+            </joint>
+            <joint name="${prefix}rv4frl_joint_5">
+                <param name="initial_position">${initial_positions['rv_joint_5']}</param>
+                <command_interface name="position" >
+                    <param name="min">-2.0943951023931953</param>
+                    <param name="max">2.0943951023931953</param>
+                </command_interface>
+                <state_interface name="position"/>
+                 <xacro:if value="$(arg use_sim)">
+                    <state_interface name="position">
+                        <param name="initial_value">${initial_positions['rv_joint_5']}</param>
+                    </state_interface>
+                </xacro:if>
+            </joint>
+            <joint name="${prefix}rv4frl_joint_6">
+                <param name="initial_position">${initial_positions['rv_joint_6']}</param>
+                <command_interface name="position" >
+                    <param name="min">-6.283185307179586</param>
+                    <param name="max">6.283185307179586</param>
+                </command_interface>
+                <state_interface name="position"/>
+                <xacro:if value="$(arg use_sim)">
+                    <state_interface name="position">
+                        <param name="initial_value">${initial_positions['rv_joint_6']}</param>
+                    </state_interface>
+                </xacro:if>
+            </joint>
+
+
+            <xacro:macro name="gpio_interface" params="interface_name add_state_interfaces add_command_interfaces">
+            <gpio name="${interface_name}">
+
+                <!-- Add state_interface blocks if specified -->
+                <xacro:if value="${add_state_interfaces}">
+                <state_interface name="bit_id"/>
+                <state_interface name="bit_mask"/>
+                <state_interface name="bit_send_type"/>
+                <state_interface name="input_data"/>
+                <state_interface name="output_data"/>
+                </xacro:if>
+
+                <!-- Add command_interface blocks if specified -->
+                <xacro:if value="${add_command_interfaces}">
+                <command_interface name="bit_id"/>
+                <command_interface name="bit_mask"/>
+                <command_interface name="bit_recv_type"/>
+                <command_interface name="bit_send_type"/>
+                <command_interface name="output_data"/>
+                </xacro:if>
+
+            </gpio>
+            </xacro:macro>
+            
+
+            <xacro:unless value="$(arg use_fake_hardware)">
+                <xacro:if value="${controller_type == 'R'}">
+                    <!-- R Type Controller IO -->
+                    <xacro:gpio_interface interface_name="${prefix}hand_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}plc_link_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}safety_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}io_unit" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}misc1_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}misc2_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}misc3_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                </xacro:if>
+                <xacro:if value="${controller_type == 'Q'}">
+                    <!-- Q Type Controller IO -->
+                    <xacro:gpio_interface interface_name="${prefix}hand_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}plc_link_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}safety_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}io_unit" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}misc1_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}misc2_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}misc3_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                </xacro:if>
+                <xacro:if value="${controller_type == 'D'}">
+                    <!-- D Type Controller IO -->
+                    <xacro:gpio_interface interface_name="${prefix}hand_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}plc_link_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}safety_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}io_unit" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}misc1_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}misc2_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                    <xacro:gpio_interface interface_name="${prefix}misc3_io" add_state_interfaces="true" add_command_interfaces="true"/>
+                </xacro:if>
+                <gpio name="${prefix}io_control_mode">
+                    <state_interface name="io_mode"/>
+                    <command_interface name="io_mode"/>
+                </gpio>
+                <gpio name="${prefix}ctrl">
+                    <state_interface name="ctrl_type"/>
+                    <command_interface name="ctrl_type"/>
+                </gpio>
+            </xacro:unless>
+        </ros2_control>
+
+    </xacro:macro>
+
+</robot>

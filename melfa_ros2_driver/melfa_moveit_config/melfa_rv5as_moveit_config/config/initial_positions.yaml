@@ -1,0 +1,9 @@
+# Default initial positions for rv5as's ros2_control fake system
+
+initial_positions:
+  rv5as_joint_1: 0
+  rv5as_joint_2: 0
+  rv5as_joint_3: 0
+  rv5as_joint_4: 0
+  rv5as_joint_5: 0
+  rv5as_joint_6: 0

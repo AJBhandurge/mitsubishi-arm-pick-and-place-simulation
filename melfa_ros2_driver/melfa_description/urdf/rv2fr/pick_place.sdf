@@ -1,0 +1,57 @@
+<sdf version='1.9'>
+  <world name='empty_world'>
+    <gravity>0 0 -9.8</gravity>
+    <physics type='ode'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Ground Plane</uri>
+    </include>
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Sun</uri>
+    </include>
+
+    <model name="red_box">
+      <link name="red_link">
+        <pose>0.35 0.0 0.0 0 0 0</pose>
+        <collision name="red_collision">
+          <geometry><box><size>0.03 0.03 0.1</size></box></geometry>
+        </collision>
+        <visual name="red_visual">
+          <geometry><box><size>0.03 0.03 0.1</size></box></geometry>
+          <material><ambient>1 0 0 1</ambient><diffuse>1 0 0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="green_box">
+      <link name="green_link">
+        <pose>0.35 0.2 0.00 0 0 0</pose>
+        <collision name="green_collision">
+          <geometry><box><size>0.03 0.03 0.1</size></box></geometry>
+        </collision>
+        <visual name="green_visual">
+          <geometry><box><size>0.03 0.03 0.1</size></box></geometry>
+          <material><ambient>0 1 0 1</ambient><diffuse>0 1 0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="blue_box">
+      <link name="blue_link">
+        <pose>0.35 -0.2 0.05 0 0 0</pose>
+        <collision name="blue_collision">
+          <geometry><box><size>0.03 0.03 0.1</size></box></geometry>
+        </collision>
+        <visual name="blue_visual">
+          <geometry><box><size>0.03 0.03 0.1</size></box></geometry>
+          <material><ambient>0 0 1 1</ambient><diffuse>0 0 1 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>

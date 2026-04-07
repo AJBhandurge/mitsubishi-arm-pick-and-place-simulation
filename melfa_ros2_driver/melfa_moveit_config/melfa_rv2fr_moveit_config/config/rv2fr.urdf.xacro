@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rv2fr">
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <!-- Import rv2fr urdf file -->
+    <xacro:include filename="$(find melfa_description)/urdf/rv2fr/rv2fr.urdf" />
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="rv2fr.ros2_control.xacro" />
+
+
+    <xacro:rv2fr_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
+
+</robot>

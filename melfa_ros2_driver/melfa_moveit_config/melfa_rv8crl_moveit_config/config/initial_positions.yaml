@@ -1,0 +1,9 @@
+# Default initial positions for RV-8CRL's ros2_control fake system
+
+initial_positions:
+  rv8crl_joint_1: 0
+  rv8crl_joint_2: 0
+  rv8crl_joint_3: 0
+  rv8crl_joint_4: 0
+  rv8crl_joint_5: 0
+  rv8crl_joint_6: 0

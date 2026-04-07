@@ -1,0 +1,40 @@
+# joint_limits.yaml allows the dynamics properties specified in the URDF to be overwritten or augmented as needed
+
+# For beginners, we downscale velocity and acceleration limits.
+# You can always specify higher scaling factors (<= 1.0) in your motion requests.  # Increase the values below to 1.0 to always move at maximum speed.
+default_velocity_scaling_factor: 0.1
+default_acceleration_scaling_factor: 0.1
+
+# Specific joint properties can be changed with the keys [max_position, min_position, max_velocity, max_acceleration]
+# Joint limits can be turned off with [has_velocity_limits, has_acceleration_limits]
+joint_limits:
+  rv80fr_joint_1:
+    has_velocity_limits: true
+    max_velocity: 3.1415920000000002
+    has_acceleration_limits: true
+    max_acceleration: 50.265472
+  rv80fr_joint_2:
+    has_velocity_limits: true
+    max_velocity: 3.1415920000000002
+    has_acceleration_limits: true
+    max_acceleration: 50.265472
+  rv80fr_joint_3:
+    has_velocity_limits: true
+    max_velocity: 2.7925270000000002
+    has_acceleration_limits: true
+    max_acceleration: 44.680432
+  rv80fr_joint_4:
+    has_velocity_limits: true
+    max_velocity: 3.2288589999999999
+    has_acceleration_limits: true
+    max_acceleration: 51.661744
+  rv80fr_joint_5:
+    has_velocity_limits: true
+    max_velocity: 2.8797929999999998
+    has_acceleration_limits: true
+    max_acceleration: 46.076688
+  rv80fr_joint_6:
+    has_velocity_limits: true
+    max_velocity: 4.8869220000000002
+    has_acceleration_limits: true
+    max_acceleration: 78.190752

@@ -1,0 +1,236 @@
+<?xml version="1.0" ?>
+<robot name="rv2fr">
+  <material name="white">
+    <color rgba="1.0 1.0 1.0 1.0"/>
+  </material>
+  <link name="world"/>
+  <link name="rv2fr_base">
+    <visual>
+      <material name="white"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://melfa_description/meshes/rv2fr/base.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://melfa_description/meshes/rv2fr/base.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="rv2fr_shoulder">
+    <visual>
+      <material name="white"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://melfa_description/meshes/rv2fr/shoulder.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://melfa_description/meshes/rv2fr/shoulder.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="rv2fr_upper_arm">
+    <visual>
+      <material name="white"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://melfa_description/meshes/rv2fr/upper_arm.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://melfa_description/meshes/rv2fr/upper_arm.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="rv2fr_elbow">
+    <visual>
+      <material name="white"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://melfa_description/meshes/rv2fr/elbow.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://melfa_description/meshes/rv2fr/elbow.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="rv2fr_forearm">
+    <visual>
+      <material name="white"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://melfa_description/meshes/rv2fr/forearm.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://melfa_description/meshes/rv2fr/forearm.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="rv2fr_wrist">
+    <visual>
+      <material name="white"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://melfa_description/meshes/rv2fr/wrist.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://melfa_description/meshes/rv2fr/wrist.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="rv2fr_hand_flange">
+    <visual>
+      <material name="white"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://melfa_description/meshes/rv2fr/hand_flange.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://melfa_description/meshes/rv2fr/hand_flange.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="rv2fr_default_tcp"/>
+  <joint name="rv2fr_world_to_base" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    <parent link="world"/>
+    <child link="rv2fr_base"/>
+  </joint>
+  <joint name="rv2fr_joint_1" type="revolute">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    <parent link="rv2fr_base"/>
+    <child link="rv2fr_shoulder"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1" lower="-4.1887902047863905" upper="4.1887902047863905" velocity="5.235987755982989"/>
+  </joint>
+  <joint name="rv2fr_joint_2" type="revolute">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.295"/>
+    <parent link="rv2fr_shoulder"/>
+    <child link="rv2fr_upper_arm"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="1" lower="-2.0943951023931953" upper="2.0943951023931953" velocity="2.6179938779914944"/>
+  </joint>
+  <joint name="rv2fr_joint_3" type="revolute">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.23"/>
+    <parent link="rv2fr_upper_arm"/>
+    <child link="rv2fr_elbow"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="1" lower="0.0" upper="2.792526803190927" velocity="5.235987755982989"/>
+  </joint>
+  <joint name="rv2fr_joint_4" type="revolute">
+    <origin rpy="0 0 0" xyz="-0.05 0.0 0.0"/>
+    <parent link="rv2fr_elbow"/>
+    <child link="rv2fr_forearm"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1" lower="-3.490658503988659" upper="3.490658503988659" velocity="7.853981633974483"/>
+  </joint>
+  <joint name="rv2fr_joint_5" type="revolute">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.27"/>
+    <parent link="rv2fr_forearm"/>
+    <child link="rv2fr_wrist"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="1" lower="-2.0943951023931953" upper="2.0943951023931953" velocity="7.853981633974483"/>
+  </joint>
+  <joint name="rv2fr_joint_6" type="revolute">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.07"/>
+    <parent link="rv2fr_wrist"/>
+    <child link="rv2fr_hand_flange"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1" lower="-6.283185307179586" upper="6.283185307179586" velocity="12.566370614359172"/>
+  </joint>
+  <joint name="rv2fr_hand_tcp" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    <parent link="rv2fr_hand_flange"/>
+    <child link="rv2fr_default_tcp"/>
+  </joint>
+  <link name="gripper_base">
+    <visual>
+      <geometry>
+        <box size="0.05 0.1 0.04"/> </geometry>
+      <origin xyz="0 0 0.02" rpy="0 0 0"/>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.05 0.1 0.04"/>
+      </geometry>
+      <origin xyz="0 0 0.02" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.3" />
+      <inertia ixx="0.0003" ixy="0" ixz="0" iyy="0.0003" iyz="0" izz="0.0003" />
+    </inertial>
+  </link>
+
+  <joint name="gripper_base_joint" type="fixed">
+    <parent link="rv2fr_default_tcp"/>
+    <child link="gripper_base"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="left_finger">
+    <visual>
+      <geometry><box size="0.02 0.01 0.06"/></geometry>
+      <origin xyz="0 0 0.03" rpy="0 0 0"/>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry><box size="0.02 0.01 0.06"/></geometry>
+      <origin xyz="0 0 0.03" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.1" />
+      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001" />
+    </inertial>
+  </link>
+
+  <link name="right_finger">
+    <visual>
+      <geometry><box size="0.02 0.01 0.06"/></geometry>
+      <origin xyz="0 0 0.03" rpy="0 0 0"/>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry><box size="0.02 0.01 0.06"/></geometry>
+      <origin xyz="0 0 0.03" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.1" />
+      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001" />
+    </inertial>
+  </link>
+
+  <joint name="finger_joint_l" type="prismatic">
+    <parent link="gripper_base"/>
+    <child link="left_finger"/>
+    <origin xyz="0 0.03 0.04" rpy="0 0 0"/> <axis xyz="0 1 0"/>
+    <limit effort="20" lower="-0.02" upper="0.0" velocity="0.05"/>
+  </joint>
+
+  <joint name="finger_joint_r" type="prismatic">
+    <parent link="gripper_base"/>
+    <child link="right_finger"/>
+    <origin xyz="0 -0.03 0.04" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="20" lower="0.0" upper="0.02" velocity="0.05"/>
+  </joint>
+</robot>

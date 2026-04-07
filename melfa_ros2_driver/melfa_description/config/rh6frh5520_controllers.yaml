@@ -1,0 +1,155 @@
+#    COPYRIGHT (C) 2024 Mitsubishi Electric Corporation
+
+#    Licensed under the Apache License, Version 2.0 (the "License");
+#    you may not use this file except in compliance with the License.
+#    You may obtain a copy of the License at
+
+#        http://www.apache.org/licenses/LICENSE-2.0
+
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS,
+#    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#    See the License for the specific language governing permissions and
+#    limitations under the License.
+
+controller_manager:
+  ros__parameters:
+    update_rate: 286  #Hz
+
+    rh6frh5520_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    gpio_controller:
+      type: melfa_io_controllers/MelfaGPIOController
+
+    forward_position_controller:
+      type: forward_command_controller/ForwardCommandController
+
+rh6frh5520_controller:
+  ros__parameters:
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+    joints:
+      - $(var prefix)rh6frh5520_joint_1
+      - $(var prefix)rh6frh5520_joint_2
+      - $(var prefix)rh6frh5520_joint_3
+      - $(var prefix)rh6frh5520_joint_4
+      # - rh6frh5520_joint_1
+      # - rh6frh5520_joint_2
+      # - rh6frh5520_joint_3
+      # - rh6frh5520_joint_4
+
+    state_publish_rate: 286.0 # Defaults to 50
+    action_monitor_rate: 20.0 # Defaults to 20
+
+gpio_controller:
+  ros__parameters:
+    hand_io_state_interfaces:
+      - $(var prefix)hand_io/bit_id
+      - $(var prefix)hand_io/bit_mask
+      - $(var prefix)hand_io/bit_send_type
+      - $(var prefix)hand_io/input_data
+      - $(var prefix)hand_io/output_data
+    plc_link_io_state_interfaces:
+      - $(var prefix)plc_link_io/bit_id
+      - $(var prefix)plc_link_io/bit_mask
+      - $(var prefix)plc_link_io/bit_send_type
+      - $(var prefix)plc_link_io/input_data
+      - $(var prefix)plc_link_io/output_data
+    safety_io_state_interfaces:
+      - $(var prefix)safety_io/bit_id
+      - $(var prefix)safety_io/bit_mask
+      - $(var prefix)safety_io/bit_send_type
+      - $(var prefix)safety_io/input_data
+      - $(var prefix)safety_io/output_data
+    io_unit_state_interfaces:
+      - $(var prefix)io_unit/bit_id
+      - $(var prefix)io_unit/bit_mask
+      - $(var prefix)io_unit/bit_send_type
+      - $(var prefix)io_unit/input_data
+      - $(var prefix)io_unit/output_data
+    misc1_io_state_interfaces:
+      - $(var prefix)misc1_io/bit_id
+      - $(var prefix)misc1_io/bit_mask
+      - $(var prefix)misc1_io/bit_send_type
+      - $(var prefix)misc1_io/input_data
+      - $(var prefix)misc1_io/output_data
+    misc2_io_state_interfaces:
+      - $(var prefix)misc2_io/bit_id
+      - $(var prefix)misc2_io/bit_mask
+      - $(var prefix)misc2_io/bit_send_type
+      - $(var prefix)misc2_io/input_data
+      - $(var prefix)misc2_io/output_data
+    misc3_io_state_interfaces:
+      - $(var prefix)misc3_io/bit_id
+      - $(var prefix)misc3_io/bit_mask
+      - $(var prefix)misc3_io/bit_send_type
+      - $(var prefix)misc3_io/input_data
+      - $(var prefix)misc3_io/output_data
+    misc_io_state_interfaces:
+      - $(var prefix)io_control_mode/io_mode
+      - $(var prefix)ctrl/ctrl_type
+    hand_io_command_interfaces:
+      - $(var prefix)hand_io/bit_id
+      - $(var prefix)hand_io/bit_mask
+      - $(var prefix)hand_io/bit_recv_type
+      - $(var prefix)hand_io/bit_send_type
+      - $(var prefix)hand_io/output_data
+    plc_link_io_command_interfaces:
+      - $(var prefix)plc_link_io/bit_id
+      - $(var prefix)plc_link_io/bit_mask
+      - $(var prefix)plc_link_io/bit_recv_type
+      - $(var prefix)plc_link_io/bit_send_type
+      - $(var prefix)plc_link_io/output_data
+    safety_io_command_interfaces:
+      - $(var prefix)safety_io/bit_id
+      - $(var prefix)safety_io/bit_mask
+      - $(var prefix)safety_io/bit_recv_type
+      - $(var prefix)safety_io/bit_send_type
+      - $(var prefix)safety_io/output_data
+    io_unit_command_interfaces:
+      - $(var prefix)io_unit/bit_id
+      - $(var prefix)io_unit/bit_mask
+      - $(var prefix)io_unit/bit_recv_type
+      - $(var prefix)io_unit/bit_send_type
+      - $(var prefix)io_unit/output_data
+    misc1_io_command_interfaces:
+      - $(var prefix)misc1_io/bit_id
+      - $(var prefix)misc1_io/bit_mask
+      - $(var prefix)misc1_io/bit_recv_type
+      - $(var prefix)misc1_io/bit_send_type
+      - $(var prefix)misc1_io/output_data
+    misc2_io_command_interfaces:
+      - $(var prefix)misc2_io/bit_id
+      - $(var prefix)misc2_io/bit_mask
+      - $(var prefix)misc2_io/bit_recv_type
+      - $(var prefix)misc2_io/bit_send_type
+      - $(var prefix)misc2_io/output_data
+    misc3_io_command_interfaces:
+      - $(var prefix)misc3_io/bit_id
+      - $(var prefix)misc3_io/bit_mask
+      - $(var prefix)misc3_io/bit_recv_type
+      - $(var prefix)misc3_io/bit_send_type
+      - $(var prefix)misc3_io/output_data
+    misc_io_command_interfaces:
+      - $(var prefix)io_control_mode/io_mode
+      - $(var prefix)ctrl/ctrl_type
+
+forward_position_controller:
+  ros__parameters:
+    joints:
+      - $(var prefix)rh6frh5520_joint_1
+      - $(var prefix)rh6frh5520_joint_2
+      - $(var prefix)rh6frh5520_joint_3
+      - $(var prefix)rh6frh5520_joint_4
+      # - rh6frh5520_joint_1
+      # - rh6frh5520_joint_2
+      # - rh6frh5520_joint_3
+      # - rh6frh5520_joint_4
+      
+    interface_name: position

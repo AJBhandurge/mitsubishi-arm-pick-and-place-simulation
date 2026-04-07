@@ -1,0 +1,189 @@
+#    COPYRIGHT (C) 2024 Mitsubishi Electric Corporation
+
+#    Licensed under the Apache License, Version 2.0 (the "License");
+#    you may not use this file except in compliance with the License.
+#    You may obtain a copy of the License at
+
+#        http://www.apache.org/licenses/LICENSE-2.0
+
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS,
+#    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#    See the License for the specific language governing permissions and
+#    limitations under the License.
+
+import os
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler, ExecuteProcess
+from launch.conditions import IfCondition
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
+from moveit_configs_utils import MoveItConfigsBuilder
+from launch_param_builder import ParameterBuilder
+from launch.event_handlers import OnProcessStart
+
+def generate_launch_description():
+    # Declare arguments
+    launch_servo = LaunchConfiguration("launch_servo")
+
+    declared_arguments = []
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            'start_rviz',
+            default_value='true',
+            description='Start RViz2 automatically with this launch file.',
+        )
+    )
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "moveit_config_package",
+            default_value="melfa_rv4frl_moveit_config",
+            description="MoveIt config package with robot SRDF/XACRO files. Usually the argument \
+        is not set, it enables use of a custom moveit config.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "db", default_value="False", description="Database flag"
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+                "warehouse_sqlite_path",
+                default_value=os.path.expanduser("~/.ros/warehouse_ros.sqlite"),
+                description="Path where the warehouse database should be stored",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+                "use_sim_time",
+                default_value="false",
+                description="Using or not time from simulation",
+        )
+    )
+
+    # Initialize Arguments
+    start_rviz = LaunchConfiguration('start_rviz')
+    moveit_config_package = LaunchConfiguration("moveit_config_package")
+    warehouse_sqlite_path = LaunchConfiguration("warehouse_sqlite_path")
+    use_sim_time = LaunchConfiguration("use_sim_time")
+
+    warehouse_ros_config = {
+        "warehouse_plugin": "warehouse_ros_sqlite::DatabaseConnection",
+        "warehouse_host": warehouse_sqlite_path,
+    }
+
+    # Initialize Moveit Configuration
+    moveit_config = (
+        MoveItConfigsBuilder("rv4frl", package_name="melfa_rv4frl_moveit_config")
+        .robot_description(
+            file_path="config/rv4frl.urdf.xacro",
+        )
+        .robot_description_semantic(file_path="config/rv4frl.srdf")
+        .trajectory_execution(file_path="config/moveit_controllers.yaml")
+        .planning_pipelines(
+            # pipelines=["ompl", "chomp", "pilz_industrial_motion_planner", "stomp"] # Add "stomp" if moveit2 humble branch adds stomp feature
+            pipelines=["ompl", "chomp", "pilz_industrial_motion_planner"]
+        )
+        .to_moveit_configs()
+    )
+    
+
+    # Start the actual move_group node/action server
+    move_group_node = Node(
+        package="moveit_ros_move_group",
+        executable="move_group",
+        output="screen",
+        parameters=[moveit_config.to_dict(),
+                    warehouse_ros_config,
+                    {
+                "use_sim_time": use_sim_time,
+                 },
+                ],
+        arguments=["--ros-args", "--log-level", "info"],
+    )
+
+    # rviz with moveit configuration
+    rviz_config_file = PathJoinSubstitution(
+        [FindPackageShare(moveit_config_package), "rviz", "rv4frl_moveit.rviz"]
+    )
+    rviz_node = Node(
+        package="rviz2",
+        condition=IfCondition(start_rviz),
+        executable="rviz2",
+        name="rviz2_moveit",
+        output="log",
+        arguments=["-d", rviz_config_file],
+        parameters=[
+            moveit_config.robot_description,
+            moveit_config.robot_description_semantic,
+            moveit_config.planning_pipelines,
+            moveit_config.robot_description_kinematics,
+            warehouse_ros_config,
+            {
+                "use_sim_time": use_sim_time,
+            },
+        ],
+    )
+
+    # Warehouse mongodb server
+    db_config = LaunchConfiguration("db")
+    mongodb_server_node = Node(
+        package="warehouse_ros_mongo",
+        executable="mongo_wrapper_ros.py",
+        parameters=[
+            {"warehouse_port": 33829},
+            {"warehouse_host": "localhost"},
+            {"warehouse_plugin": "warehouse_ros_mongo::MongoDatabaseConnection"},
+        ],
+        output="screen",
+        condition=IfCondition(db_config),
+    )
+
+    # Get parameters for the Servo node
+    servo_params = (
+        ParameterBuilder("melfa_rv4frl_moveit_config")
+        .yaml(
+            parameter_namespace="moveit_servo",
+            file_path="config/rv4frl_servo.yaml",
+        )
+        .to_dict()
+    )
+
+    # Servo node for realtime control
+    servo_node = Node(
+        package="moveit_servo",
+        executable="servo_node_main",
+        parameters=[
+            servo_params,
+            moveit_config.robot_description,
+            moveit_config.robot_description_semantic,
+            moveit_config.robot_description_kinematics
+        ],
+        # ros_arguments= [{'use_intra_process_comms' : True}],
+        output="screen",
+    )
+
+    # Service request to start servo
+    servo_trigger = ExecuteProcess(
+        cmd=["ros2", "service", "call", "/servo_node/start_servo", "std_srvs/srv/Trigger", "{}"],
+        output="screen",
+    )
+
+    # Event handler which triggers when servo node is running
+    servo_trigger_event_handler = RegisterEventHandler(
+        OnProcessStart(
+            target_action=servo_node,
+            on_start=[
+                servo_trigger
+            ]
+        )
+    )
+
+
+    nodes = [move_group_node, rviz_node, mongodb_server_node, servo_node, servo_trigger_event_handler]
+
+    return LaunchDescription(declared_arguments + nodes)

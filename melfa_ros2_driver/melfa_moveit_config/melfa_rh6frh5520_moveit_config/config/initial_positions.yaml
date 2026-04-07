@@ -1,0 +1,7 @@
+# Default initial positions for rh6frh5520's ros2_control fake system
+
+initial_positions:
+  rh6frh5520_joint_1: 0
+  rh6frh5520_joint_2: 0
+  rh6frh5520_joint_3: 0
+  rh6frh5520_joint_4: 0

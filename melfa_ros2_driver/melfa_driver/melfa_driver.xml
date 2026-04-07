@@ -1,0 +1,9 @@
+<library path="melfa_driver">
+    <class name="melfa_driver/MELFAPositionHardwareInterface"
+            type="melfa_driver::MELFAPositionHardwareInterface"
+            base_class_type="hardware_interface::SystemInterface">
+        <description>
+            Hardware plugin for MELFA joint-space position control.
+        </description>
+    </class>
+</library>

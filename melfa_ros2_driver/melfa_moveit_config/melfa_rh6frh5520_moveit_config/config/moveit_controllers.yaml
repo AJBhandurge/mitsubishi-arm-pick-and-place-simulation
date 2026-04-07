@@ -1,0 +1,22 @@
+# MoveIt uses this configuration for controller management
+trajectory_execution:
+  allowed_execution_duration_scaling: 1.2
+  allowed_goal_duration_margin: 0.5
+  allowed_start_tolerance: 0.05
+  trajectory_duration_monitoring: true
+
+moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControllerManager
+
+moveit_simple_controller_manager:
+  controller_names:
+    - rh6frh5520_controller
+
+  rh6frh5520_controller:
+    type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory
+    default: true
+    joints:
+      - rh6frh5520_joint_1
+      - rh6frh5520_joint_2
+      - rh6frh5520_joint_3
+      - rh6frh5520_joint_4

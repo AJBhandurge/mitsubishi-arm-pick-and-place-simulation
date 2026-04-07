@@ -1,0 +1,19 @@
+planning_plugin: stomp_moveit/StompPlanner
+request_adapters: >-
+  default_planner_request_adapters/AddTimeOptimalParameterization
+  default_planner_request_adapters/ResolveConstraintFrames
+  default_planner_request_adapters/FixWorkspaceBounds
+  default_planner_request_adapters/FixStartStateBounds
+  default_planner_request_adapters/FixStartStateCollision
+  default_planner_request_adapters/FixStartStatePathConstraints
+
+
+num_timesteps: 40
+num_iterations: 10000
+num_iterations_after_valid: 0
+num_rollouts: 15
+max_rollouts: 25
+exponentiated_cost_sensitivity: 0.4
+control_cost_weight: 0.1
+delta_t: 0.1
+path_marker_topic: 'path_marker'

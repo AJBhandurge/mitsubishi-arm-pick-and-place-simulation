@@ -1,0 +1,9 @@
+# Default initial positions for RV-13FRL's ros2_control fake system
+
+initial_positions:
+  rv13frl_joint_1: 0
+  rv13frl_joint_2: 0
+  rv13frl_joint_3: 0
+  rv13frl_joint_4: 0
+  rv13frl_joint_5: 0
+  rv13frl_joint_6: 0

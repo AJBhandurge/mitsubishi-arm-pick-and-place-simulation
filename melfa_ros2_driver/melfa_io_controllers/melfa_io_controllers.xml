@@ -1,0 +1,9 @@
+<library path="melfa_io_controllers">
+    <class name="melfa_io_controllers/MelfaGPIOController"
+            type="melfa_io_controllers::MelfaGPIOController"
+            base_class_type="controller_interface::ControllerInterface">
+        <description>
+            Controller plugin for MELFA General Purpose Input Output.
+        </description>
+    </class>
+</library>

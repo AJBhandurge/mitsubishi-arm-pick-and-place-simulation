@@ -1,0 +1,23 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: melfa_description
+    relative_path: urdf/rv4fr/rv4fr.urdf
+  srdf:
+    relative_path: config/rv4fr.srdf
+  package_settings:
+    author_name: Liu Muyao
+    author_email: Muyao.Liu@asia.meap.com
+    generated_timestamp: 1716983452
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position

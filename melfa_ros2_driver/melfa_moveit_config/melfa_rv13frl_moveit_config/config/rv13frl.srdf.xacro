@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:include filename="$(find melfa_rv13frl_moveit_config)/config/rv13frl_macro.srdf.xacro"/>
+
+  <xacro:rv13frl />
+
+</robot>

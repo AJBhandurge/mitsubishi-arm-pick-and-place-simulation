@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rv8crl">
+
+    <!-- Enable setting arguments from the launch file -->
+    <xacro:arg name="use_sim" default="false" />
+    <xacro:arg name="use_fake_hardware" default="true" />
+    <xacro:arg name="prefix" default="" />
+    <xacro:arg name="robot_ip" default="192.168.0.20" />
+    <xacro:arg name="robot_port" default="10000" />
+    <xacro:arg name="initial_positions_file" default="initial_positions_rv.yaml" />
+    <xacro:arg name="controller_config" default="custom_io_params.yaml" />
+    <xacro:arg name="controller_type" default="D" />
+    <xacro:arg name="scara" default="0" />
+    <xacro:arg name="is_j7" default="0" />
+    <xacro:arg name="j7_linear" default="0" />
+    <xacro:arg name="is_j8" default="0" />
+    <xacro:arg name="j8_linear" default="0" />
+    <xacro:arg name="packet_lost_log" default="1" />
+    <xacro:arg name="simulation_controllers" default="" />
+
+    <!-- Import urdf file -->
+    <xacro:include filename="$(find melfa_description)/urdf/rv8crl/rv8crl_macro.xacro" />
+    <!-- Import ros2_control description -->
+    <xacro:include filename="$(find melfa_description)/ros2_control/rv8crl.hardware.xacro" />
+
+    <!-- Use world link to fix robot -->
+    <link name="$(arg prefix)world"/>
+    <xacro:rv8crl parent="$(arg prefix)world" prefix="$(arg prefix)">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:rv8crl>
+    <xacro:rv8crl_hardware
+        name="rv8crl" 
+        prefix="$(arg prefix)"
+        robot_ip="$(arg robot_ip)" 
+        robot_port="$(arg robot_port)"
+        scara="$(arg scara)"
+        is_j7="$(arg is_j7)"
+        j7_linear="$(arg j7_linear)"
+        is_j8="$(arg is_j8)"
+        j8_linear="$(arg j8_linear)"
+        initial_positions_file="$(arg initial_positions_file)"
+        controller_config="$(arg controller_config)"
+        use_sim="$(arg use_sim)" 
+        use_fake_hardware="$(arg use_fake_hardware)"
+        controller_type="$(arg controller_type)"
+        packet_lost_log="$(arg packet_lost_log)"
+        />
+    <xacro:if value="$(arg use_sim)">
+        <!-- Gazebo plugins -->
+        <gazebo reference="world">
+        </gazebo>
+        <gazebo>
+        <plugin filename="libign_ros2_control-system.so" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+            <parameters>$(arg simulation_controllers)</parameters>
+            <controller_manager_node_name>$(arg prefix)controller_manager</controller_manager_node_name>
+        </plugin>
+        </gazebo>
+    </xacro:if>
+
+</robot>

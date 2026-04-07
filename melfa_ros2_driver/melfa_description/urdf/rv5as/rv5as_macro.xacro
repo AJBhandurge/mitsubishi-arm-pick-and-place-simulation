@@ -1,0 +1,212 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="cylinder_inertial" params="radius length mass *origin">
+        <inertial>
+        <mass value="${mass}" />
+        <xacro:insert_block name="origin" />
+        <inertia ixx="${0.0833333 * mass * (3 * radius * radius + length * length)}" ixy="0.0" ixz="0.0"
+            iyy="${0.0833333 * mass * (3 * radius * radius + length * length)}" iyz="0.0"
+            izz="${0.5 * mass * radius * radius}" />
+        </inertial>
+    </xacro:macro>
+    <xacro:macro name="rv5as" params="parent prefix *origin">
+        <!-- Inertial parameters -->
+        <xacro:property name="base_mass" value="0.4" />  <!-- These mass are INCORRRECT -->
+        <xacro:property name="shoulder_mass" value="0.37000" />
+        <xacro:property name="upper_arm_mass" value="0.33930" />
+        <xacro:property name="elbow_mass" value="0.22750" />
+        <xacro:property name="forearm_mass" value="0.12190" />
+        <xacro:property name="wrist_mass" value="0.12190" />
+        <xacro:property name="hand_flange_mass" value="0.01879" />
+        <material name="white">
+            <color rgba="1.0 1.0 1.0 1.0"/>
+        </material>
+        <joint name="Mate1" type="fixed">
+            <origin xyz="0 0 0" rpy="0 -0 0" />
+            <parent link="${parent}" />
+            <child link="${prefix}rv5as_base" />
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rv5as_joint_1" type="revolute">
+            <origin xyz="0 0 0" rpy="0 0 0" />       
+            <parent link="${prefix}rv5as_base" />
+            <child link="${prefix}rv5as_shoulder" />
+            <axis xyz="0 0 1" />
+            <limit effort="50" velocity="2.16421" lower="-4.18879" upper="4.18879" />
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rv5as_joint_2" type="revolute">
+            <origin xyz="0 0 0.254" rpy="0 0 0" />    
+            <parent link="${prefix}rv5as_shoulder" />
+            <child link="${prefix}rv5as_upper_arm" />
+            <axis xyz="0 1 0" />
+            <limit effort="50" velocity="2.16421" lower="-2.58309" upper="2.58309" />
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rv5as_joint_3" type="revolute">
+            <origin xyz="0 0 0.41" rpy="0 0 0" />
+            <parent link="${prefix}rv5as_upper_arm" />
+            <child link="${prefix}rv5as_elbow" />
+            <axis xyz="0 1 0" />
+            <limit effort="50" velocity="2.16421" lower="-2.61799" upper="2.61799" />
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rv5as_joint_4" type="revolute">
+            <origin xyz="0 0 0" rpy="0 0 0" />   
+            <parent link="${prefix}rv5as_elbow" />
+            <child link="${prefix}rv5as_forearm" />
+            <axis xyz="0 0 1" />
+            <limit effort="50" velocity="3.4383" lower="-3.49066" upper="3.49066" />
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rv5as_joint_5" type="revolute">
+            <origin xyz="0 0 0.5" rpy="0 0 0" />    
+            <parent link="${prefix}rv5as_forearm" />
+            <child link="${prefix}rv5as_wrist" />
+            <axis xyz="0 1 0" />
+            <limit effort="50" velocity="6.21337" lower="-2.0944" upper="2.0944" />
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rv5as_joint_6" type="revolute">
+            <origin xyz="0 0 0.125" rpy="0 0 0" /> 
+            <parent link="${prefix}rv5as_wrist" />
+            <child link="${prefix}rv5as_hand_flange" />
+            <axis xyz="0 0 1" />
+            <limit effort="50" velocity="6.28318" lower="-3.49066" upper="3.49066" />
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rv5as_hand_flange-to-default_tcp" type="fixed">
+            <origin xyz="0 0 0" rpy="0 -0 0" />
+            <parent link="${prefix}rv5as_hand_flange" />
+            <child link="${prefix}rv5as_default_tcp" />
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <link name="${prefix}rv5as_base">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0.00 0.00 0.00" xyz="0.00 0.00 0.00"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv5as/base.STL" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0.00 0.00 0.00" xyz="0.00 0.00 0.00"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv5as/base.STL" />
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${base_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rv5as_shoulder">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0.00 0.00 0" xyz="0.00 0.00 0.00"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv5as/shoulder.STL" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0.00 0.00 0" xyz="0.00 0.00 0.00"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv5as/shoulder.STL" />
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${shoulder_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rv5as_upper_arm">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0.00 0.00 0.00" xyz="0.00 0.00 0.00"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv5as/upper_arm.STL" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0.00 0.00 0.00" xyz="0.00 0.00 0.00"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv5as/upper_arm.STL" />
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${upper_arm_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rv5as_elbow">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0.00 0.00 0.00" xyz="0.00 0.00 0.00"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv5as/elbow.STL" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0.00 0.00 0.00" xyz="0.00 0.00 0.00"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv5as/elbow.STL" />
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${elbow_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rv5as_forearm">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0.00 0.00 0.00" xyz="0.00 0.00 0.00"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv5as/forearm.STL" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0.00 0.00 0.00" xyz="0.00 0.00 0.00"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv5as/forearm.STL" />
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${forearm_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rv5as_hand_flange">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0.00 0.00 0.00" xyz="0.00 0.00 0.00"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv5as/hand_flange.STL" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0.00 0.00 0.00" xyz="0.00 0.00 0.00"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv5as/hand_flange.STL" />
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${wrist_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rv5as_wrist">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0.00 0.00 0.00" xyz="0.00 0.00 0.00"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv5as/wrist.STL" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0.00 0.00 0.00" xyz="0.00 0.00 0.00"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv5as/wrist.STL" />
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${hand_flange_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rv5as_default_tcp" />
+    </xacro:macro>
+</robot>

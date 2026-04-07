@@ -1,0 +1,214 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="cylinder_inertial" params="radius length mass *origin">
+        <inertial>
+        <mass value="${mass}" />
+        <xacro:insert_block name="origin" />
+        <inertia ixx="${0.0833333 * mass * (3 * radius * radius + length * length)}" ixy="0.0" ixz="0.0"
+            iyy="${0.0833333 * mass * (3 * radius * radius + length * length)}" iyz="0.0"
+            izz="${0.5 * mass * radius * radius}" />
+        </inertial>
+    </xacro:macro>
+    <xacro:macro name="rv7frl" params="parent prefix *origin">
+        <!-- Inertial parameters -->
+        <xacro:property name="base_mass" value="0.4" />  <!-- These mass are INCORRRECT -->
+        <xacro:property name="shoulder_mass" value="0.37000" />
+        <xacro:property name="upper_arm_mass" value="0.33930" />
+        <xacro:property name="forearm_mass" value="0.22750" />
+        <xacro:property name="elbow_mass" value="0.12190" />
+        <xacro:property name="forearm_mass" value="0.12190" />
+        <xacro:property name="wrist_mass" value="0.12190" />
+        <xacro:property name="hand_flange_mass" value="0.12190" />
+
+        <material name="white">
+            <color rgba="1.0 1.0 1.0 1.0"/>
+        </material>
+        <joint name="${prefix}rv7frl_world_to_base" type="fixed">
+            <origin xyz="0 0 0" rpy="0 -0 0" />
+            <parent link="${parent}" />
+            <child link="${prefix}rv7frl_base"/>
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rv7frl_joint_1" type="revolute">
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <parent link="${prefix}rv7frl_base"/>
+            <child link="${prefix}rv7frl_shoulder"/>
+             <axis xyz="0 0 1" />
+            <limit lower="-4.188790" upper="4.188790" effort="50" velocity="5.026548" />
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rv7frl_joint_2" type="revolute">
+            <origin xyz="0 0 0.4" rpy="0 0 0" />
+            <parent link="${prefix}rv7frl_shoulder"/>
+            <child link="${prefix}rv7frl_upper_arm"/>
+            <axis xyz="0 1 0" />
+            <limit lower="-1.919862" upper="2.268928" effort="50" velocity="5.602507" />
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rv7frl_joint_3" type="revolute">
+            <origin xyz="0 0 0.435" rpy="0 0 0" />
+            <parent link="${prefix}rv7frl_upper_arm" />
+            <child link="${prefix}rv7frl_elbow" />
+            <axis xyz="0 1 0" />
+            <limit lower="0.000000" upper="2.827433" effort="50" velocity="6.283185" />
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rv7frl_joint_4" type="revolute">
+            <origin xyz="-0.05 0 0" rpy="0 0 0" />
+            <parent link="${prefix}rv7frl_elbow" />
+            <child link="${prefix}rv7frl_forearm" />
+            <axis xyz="0 0 1" />
+            <limit lower="-3.490659" upper="3.490659" effort="50" velocity="5.881760" />
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rv7frl_joint_5" type="revolute">
+            <origin xyz="0 0 0.47" rpy="0 0 0" />
+            <parent link="${prefix}rv7frl_forearm" />
+            <child link="${prefix}rv7frl_wrist" />
+            <axis xyz="0 1 0" />
+            <limit lower="-2.094395" upper="2.094395" effort="50" velocity="7.853981" />
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rv7frl_joint_6" type="revolute">
+            <origin xyz="0 0 0.085" rpy="0 0 0" />
+            <parent link="${prefix}rv7frl_wrist" />
+            <child link="${prefix}rv7frl_hand_flange" />
+            <axis xyz="0 0 1" />
+            <limit lower="-6.283185" upper="6.283185" effort="50" velocity="12.566371" />
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rv7frl_hand_flange-to-default_tcp" type="fixed">
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <parent link="${prefix}rv7frl_hand_flange"/>
+            <child link="${prefix}rv7frl_default_tcp"/>
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <link name="${prefix}rv7frl_base">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv7frl/base.STL" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv7frl/base.STL" />
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${base_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rv7frl_shoulder">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv7frl/shoulder.STL" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv7frl/shoulder.STL" />
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${shoulder_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rv7frl_upper_arm">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv7frl/upper_arm.STL" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv7frl/upper_arm.STL" />
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${upper_arm_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rv7frl_elbow">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv7frl/elbow.STL" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv7frl/elbow.STL" />
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${elbow_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rv7frl_forearm">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv7frl/forearm.STL" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv7frl/forearm.STL" />
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${forearm_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rv7frl_wrist">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv7frl/wrist.STL" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv7frl/wrist.STL" />
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${wrist_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rv7frl_hand_flange">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv7frl/hand_flange.STL" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rv7frl/hand_flange.STL" />
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${hand_flange_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rv7frl_default_tcp" />
+    </xacro:macro>
+</robot>

@@ -1,0 +1,148 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="cylinder_inertial" params="radius length mass *origin">
+        <inertial>
+        <mass value="${mass}" />
+        <xacro:insert_block name="origin" />
+        <inertia ixx="${0.0833333 * mass * (3 * radius * radius + length * length)}" ixy="0.0" ixz="0.0"
+            iyy="${0.0833333 * mass * (3 * radius * radius + length * length)}" iyz="0.0"
+            izz="${0.5 * mass * radius * radius}" />
+        </inertial>
+    </xacro:macro>
+    <xacro:macro name="rh6frh5520" params="parent prefix *origin">
+        <!-- Inertial parameters -->
+        <xacro:property name="base_mass" value="0.4" />  <!-- These mass are INCORRRECT -->
+        <xacro:property name="shoulder_mass" value="0.37000" />
+        <xacro:property name="upper_arm_mass" value="0.83930" />
+        <xacro:property name="elbow_mass" value="0.22750" />
+        <xacro:property name="forearm_mass" value="0.12190" />
+        <xacro:property name="wrist_mass" value="0.12190" />
+        <xacro:property name="hand_flange_mass" value="0.01879" />
+
+        <material name="white">
+            <color rgba="1.0 1.0 1.0 1.0"/>
+        </material>
+        <joint name="${prefix}rh6frh5520_world_to_base" type="fixed">
+            <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+            <parent link="${parent}"/>
+            <child link="${prefix}rh6frh5520_base"/>
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rh6frh5520_joint_1" type="revolute">
+            <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+            <parent link="${prefix}rh6frh5520_base"/>
+            <child link="${prefix}rh6frh5520_no1arm"/>
+            <axis xyz="0 0 1"/>
+            <limit effort="50" lower="-2.9670597283903604" upper="2.9670597283903604" velocity="6.981317007977318"/>
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rh6frh5520_joint_2" type="revolute">
+            <origin rpy="0 0 0" xyz="0.325 0.0 0.0"/>
+            <parent link="${prefix}rh6frh5520_no1arm"/>
+            <child link="${prefix}rh6frh5520_no2arm"/>
+            <axis xyz="0 0 1"/>
+            <limit effort="50" lower="-2.5307274153917776" upper="2.5307274153917776" velocity="11.693705988362007"/>
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rh6frh5520_joint_3" type="prismatic">
+            <origin rpy="0 0 0" xyz="0.225 0.0 0.0"/>
+            <parent link="${prefix}rh6frh5520_no2arm"/>
+            <child link="${prefix}rh6frh5520_shaft_z"/>
+            <axis xyz="0 0 1"/>
+            <limit effort="50" lower="0.133" upper="0.333" velocity="2.4"/>
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rh6frh5520_joint_4" type="revolute">
+            <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+            <parent link="${prefix}rh6frh5520_shaft_z"/>
+            <child link="${prefix}rh6frh5520_shaft"/>
+            <axis xyz="0 0 1"/>
+            <limit effort="50" lower="-6.283185307179586" upper="6.283185307179586" velocity="43.63323129985824"/>
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <joint name="${prefix}rh6frh5520_shift_to_default_tcp" type="fixed">
+            <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+            <parent link="${prefix}rh6frh5520_shaft"/>
+            <child link="${prefix}rh6frh5520_default_tcp"/>
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+        <link name="${prefix}rh6frh5520_base">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rh6frh5520/base.STL"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rh6frh5520/base.STL"/>
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${base_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rh6frh5520_no1arm">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rh6frh5520/no1arm.STL"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rh6frh5520/no1arm.STL"/>
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${shoulder_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rh6frh5520_no2arm">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rh6frh5520/no2arm.STL"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rh6frh5520/no2arm.STL"/>
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${upper_arm_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rh6frh5520_shaft_z">
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${hand_flange_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rh6frh5520_shaft">
+            <visual>
+                <material name="white"/>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rh6frh5520/shaft.STL"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://melfa_description/meshes/rh6frh5520/shaft.STL"/>
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.06" length="0.05" mass="${elbow_mass}">
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            </xacro:cylinder_inertial>
+        </link>
+        <link name="${prefix}rh6frh5520_default_tcp"/>
+    </xacro:macro>
+</robot>
